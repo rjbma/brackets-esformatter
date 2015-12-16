@@ -1,0 +1,5 @@
+{
+    "dependencies": {
+        "esformatter": "~0.8.1"
+    }
+}
