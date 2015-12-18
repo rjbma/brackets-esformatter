@@ -135,7 +135,8 @@ define(function(require, exports, module) {
                 return;
             }
             try {
-                settings = JSON.parse(content);
+                // always user defaults as base 
+                settings =$.extend({}, settings, JSON.parse(content));
             } catch (e) {
                 console.error('Brackets Esformatter - Error parsing options (' + settingsFile.fullPath + '). Using default.');
                 return;

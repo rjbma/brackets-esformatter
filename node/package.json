@@ -1,5 +1,9 @@
 {
-    "dependencies": {
-        "esformatter": "~0.8.1"
-    }
+   "dependencies": {
+      "esformatter": "~0.8.1",
+      "esformatter-braces": "^1.2.1",
+      "esformatter-ignore": "^0.1.3",
+      "esformatter-jquery-chain": "^1.1.0",
+      "esformatter-jsx": "^4.0.6"
+   }
 }
