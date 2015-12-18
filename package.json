@@ -1,6 +1,6 @@
 {
     "name": "rjbma.esformatter",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "title": "Brackets esformatter",
     "description": "Format JavaScript using esformatter in Brackets",
     "engines": {
