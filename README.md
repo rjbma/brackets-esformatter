@@ -5,6 +5,7 @@ This is a shameless port of the excelent [brackets-beautify](https://github.com/
 
 # Installation
 Unfortunately, I couldn't get the extension uploaded into the [Brackets Extension Registry](https://brackets-registry.aboutweb.com/), so currently it has to be installed manually. 
+
 1. Clone the repository
 2. `cd node`
 3. `npm install` to install **esformatter** and its dependencies
