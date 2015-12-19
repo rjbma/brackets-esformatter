@@ -95,7 +95,7 @@ define(function(require, exports, module) {
             unformattedText = document.getText();
         }
 
-        esf(unformattedText, options)
+        return esf(unformattedText, options)
             .done(function(formattedText) {
                 if (formattedText !== unformattedText) {
                     batchUpdate(formattedText, range);
@@ -114,15 +114,20 @@ define(function(require, exports, module) {
         if (beautifyPrefs.get('onSave', context)) {
             doc.addRef();
             doc.__beautifySaving = true;
-            format(true);
-            setTimeout(function() {
-                CommandManager.execute(Commands.FILE_SAVE, {
-                    doc: doc
-                }).always(function() {
+
+            // format the text. formatting is asynchronous, so we're chaining actions using promises
+            format(true)
+                .done(function() {
+                    // formatting finished, so we can now save the file
+                    return CommandManager.execute(Commands.FILE_SAVE, {
+                        doc: doc
+                    });
+                })
+                .always(function() {
+                    // everything's finished, release the file 
                     delete doc.__beautifySaving;
                     doc.releaseRef();
                 });
-            });
         }
     }
 
@@ -136,7 +141,7 @@ define(function(require, exports, module) {
             }
             try {
                 // always user defaults as base 
-                settings =$.extend({}, settings, JSON.parse(content));
+                settings = $.extend({}, settings, JSON.parse(content));
             } catch (e) {
                 console.error('Brackets Esformatter - Error parsing options (' + settingsFile.fullPath + '). Using default.');
                 return;
