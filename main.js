@@ -95,13 +95,34 @@ define(function(require, exports, module) {
             unformattedText = document.getText();
         }
 
+        var originalText = unformattedText;
+        var isJson = document.getLanguage().getId() === 'json';
+        if (isJson) {
+            // seems esformatter doesn't format json
+            // but if we wrap it with round brackets, it seem to work
+            unformattedText = '(' + unformattedText + ')';
+        }
+
         return esf(unformattedText, options)
             .done(function(formattedText) {
-                if (formattedText !== unformattedText) {
+                // strip round brackets from json
+                if (isJson) {
+                    if (formattedText.charAt(0) === '(' && formattedText.charAt(formattedText.length - 1)) {
+                        formattedText = formattedText.substring(1, formattedText.length - 1);
+                    } else {
+                        // seems that formatting removed wrapping round brackets...
+                        // it's probably better to do no formatting at all
+                        formattedText = originalText;
+                    }
+                }
+
+                if (formattedText !== originalText) {
                     batchUpdate(formattedText, range);
                 }
             })
             .fail(function(err) {
+                // some error occurred, most likely the file content is invalid
+                // perhaps it would be better to fail silently without modifying the file?
                 Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_ERROR, Strings.ERROR_FORMATTING, err);
             });
     }
