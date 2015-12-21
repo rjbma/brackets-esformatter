@@ -107,8 +107,10 @@ define(function(require, exports, module) {
             .done(function(formattedText) {
                 // strip round brackets from json
                 if (isJson) {
-                    if (formattedText.charAt(0) === '(' && formattedText.charAt(formattedText.length - 1)) {
-                        formattedText = formattedText.substring(1, formattedText.length - 1);
+                    var si = formattedText.indexOf('(');
+                    var fi = formattedText.lastIndexOf(')');
+                    if (si !== -1 && fi !== -1) {
+                        formattedText = formattedText.substring(0, si) + formattedText.substring(si + 1, fi) + formattedText.substring(fi + 1);
                     } else {
                         // seems that formatting removed wrapping round brackets...
                         // it's probably better to do no formatting at all
